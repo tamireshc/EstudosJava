@@ -17,7 +17,7 @@ public class ContractService {
   public void processContract(Contract contract, int months){
     for(int i =1; i<= months; i++){
       LocalDate date =  contract.getDate().plus(i, ChronoUnit.MONTHS);
-      double baseParcel = contract.getTotalValue()/3;
+      double baseParcel = contract.getTotalValue()/months;
       double interest = onlinePaymentService.interest(baseParcel, i);
       double paymentFee = onlinePaymentService.paymentFee(baseParcel+interest);
 
