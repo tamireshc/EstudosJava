@@ -2,9 +2,12 @@ package com.tamires.course.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tamires.course.entities.enuns.OrderStatus;
+
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "tb_order")
@@ -14,11 +17,16 @@ public class Order {
   private Long id;
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
   private Instant moment;
-
   private Integer orderStatus;
+
+  //Cascade necessário pois eles terá o msm id do payment
+  @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+  private Payment payment;
   @ManyToOne
   @JoinColumn(name = "client_id")
   private User client;
+  @OneToMany(mappedBy = "id.order")
+  private Set<OrderItem> items = new HashSet<>();
 
   public Order(Long id, Instant moment, OrderStatus orderStatus, User client) {
     this.id = id;
@@ -63,6 +71,26 @@ public class Order {
 
   public void setClient(User client) {
     this.client = client;
+  }
+
+  public Payment getPayment() {
+    return payment;
+  }
+
+  public void setPayment(Payment payment) {
+    this.payment = payment;
+  }
+
+  public Set<OrderItem> getItens() {
+    return items;
+  }
+
+  public double getTotal() {
+    double sum = 0.0;
+    for (OrderItem item : items) {
+      sum += item.getSubTotal();
+    }
+    return sum;
   }
 
   @Override

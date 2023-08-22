@@ -1,5 +1,7 @@
 package com.tamires.course.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Objects;
@@ -21,6 +23,9 @@ public class Product {
     joinColumns = @JoinColumn(name = "product_id"),
     inverseJoinColumns = @JoinColumn(name = "category_id"))
   private Set<Category> categories = new HashSet<>();
+
+  @OneToMany(mappedBy = "id.product")
+  private Set<OrderItem> itens = new HashSet<>();
 
   public Product(Long id, String name, String description, double price, String imgUrl) {
     this.id = id;
@@ -76,6 +81,15 @@ public class Product {
 
   public Set<Category> getCategory() {
     return categories;
+  }
+
+  @JsonIgnore
+  public Set<Order> getOrders() {
+    Set<Order> set = new HashSet<>();
+    for (OrderItem orderItem : itens) {
+      set.add(orderItem.getOrder());
+    }
+    return set;
   }
 
   @Override
