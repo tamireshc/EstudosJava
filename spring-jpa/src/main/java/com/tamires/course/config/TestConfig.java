@@ -12,7 +12,7 @@ import java.time.Instant;
 import java.util.Arrays;
 
 @Configuration
-@Profile("test")
+@Profile("dev")
 // CommandLineRunner executa quando o projeto é iniciado
 public class TestConfig implements CommandLineRunner {
   @Autowired
