@@ -1,19 +1,31 @@
 package com.mongo.mongoprojectspring.entities;
 
+import com.mongo.mongoprojectspring.dto.AuthorDTO;
+import com.mongo.mongoprojectspring.dto.CommentDTO;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
+@Document
 public class Post {
+  @Id
   private String id;
   private LocalDate date;
   private String title;
   private String body;
+  private AuthorDTO author;
+  private List<CommentDTO> comments = new ArrayList<>();
 
-  public Post(String id, LocalDate date, String title, String body) {
+  public Post(String id, LocalDate date, String title, String body, AuthorDTO author) {
     this.id = id;
     this.date = date;
     this.title = title;
     this.body = body;
+    this.author = author;
   }
 
   Post() {
@@ -49,6 +61,18 @@ public class Post {
 
   public void setBody(String body) {
     this.body = body;
+  }
+
+  public AuthorDTO getAuthor() {
+    return author;
+  }
+
+  public void setAuthor(AuthorDTO author) {
+    this.author = author;
+  }
+
+  public List<CommentDTO> getComments() {
+    return comments;
   }
 
   @Override

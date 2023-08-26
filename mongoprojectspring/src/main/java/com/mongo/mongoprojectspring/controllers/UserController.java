@@ -1,6 +1,7 @@
 package com.mongo.mongoprojectspring.controllers;
 
 import com.mongo.mongoprojectspring.dto.UserDTO;
+import com.mongo.mongoprojectspring.entities.Post;
 import com.mongo.mongoprojectspring.entities.User;
 import com.mongo.mongoprojectspring.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,5 +51,11 @@ public class UserController {
     user.setId(id);
     User userAtt = userService.update(user);
     return ResponseEntity.ok().body(userAtt);
+  }
+
+  @GetMapping(value = "/{id}/posts")
+  public ResponseEntity<List<Post>> findPosts(@PathVariable String id) {
+    User user = userService.findById(id);
+    return ResponseEntity.ok().body(user.getPosts());
   }
 }
